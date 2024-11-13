@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trigger Maker</title>
+    <style>
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            color: #fff; 
+            margin: 0; 
+            padding: 0; 
+            height: 100vh; 
+            background: url('https://code-we.com/wp-content/uploads/2023/05/%D8%AE%D9%84%D9%81%D9%8A%D8%A7%D8%AA-%D9%83%D9%85%D8%A8%D9%8A%D9%88%D8%AA%D8%B1-1.webp') no-repeat center center fixed; 
+            background-size: cover; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            user-select: none;
+        }
+        header { position: absolute; top: 50px; text-align: center; animation: fadeIn 2s ease; }
+        h1 { font-size: 2em; text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8); letter-spacing: 2px; animation: slideIn 1s ease-out; }
+        .input-container { display: flex; flex-direction: column; align-items: center; animation: fadeIn 2s ease; }
+        .input-box { width: 90%; padding: 15px; border-radius: 10px; font-size: 1em; margin-bottom: 10px; background: #f9f9f9; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
+        .button { background: linear-gradient(45deg, #d8d2d5, #000); color: #fff; padding: 10px 20px; font-size: 1em; border: none; cursor: pointer; border-radius: 50px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); }
+        .output-box { width: 80%; max-width: 600px; margin-top: 20px; padding: 10px; border-radius: 10px; background: rgba(51, 51, 51, 0.8); color: #fff; display: none; animation: slideUp 1s ease-out; }
+        .play-btn { position: absolute; bottom: 10px; left: 10px; background: rgba(0, 0, 0, 0.6); color: #fff; border: none; padding: 10px; border-radius: 50%; cursor: pointer; }
+        
+        .copyright {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            padding: 5px;
+            pointer-events: none;
+            user-select: none;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.8);
+        }
+        
+        @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes slideIn { 0% { transform: translateY(-50px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        @keyframes slideUp { 0% { transform: translateY(50px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+<header><h1>Trigger Maker                                                              NASSER</h1></header>
+<video id="videoPlayer" src="video/Ahrix - Nova [Slowed  Reverb].mp4" style="position: absolute; top: 20px; left: 20px; width: 100px; height: 60px; border-radius: 10px;"></video>
+<button class="play-btn" onclick="toggleVideo()">►</button>
+<div class="input-container">
+    <input type="text" id="input1" class="input-box" placeholder="Enter input1">
+    <input type="text" id="input2" class="input-box" placeholder="Enter input2">
+    <button class="button" onclick="generateTrigger()">Generate Trigger</button>
+</div>
+<div id="outputBox" class="output-box">
+    <textarea id="outputText" style="width: 100%; height: 100px; padding: 10px; font-size: 1em; color: #fff; background: rgba(0, 0, 0, 0.7); border-radius: 10px; border: none;" readonly></textarea>
+    <button id="copyBtn" class="button" onclick="copyToClipboard()">Copy</button>
+</div>
+<script>
+    function generateTrigger() {
+        let input1 = document.getElementById('input1').value.trim();
+        let input2 = document.getElementById('input2').value.trim();
+        if (!input1 || !input2) { alert("Please fill in both inputs!"); return; }
+        document.getElementById('outputText').textContent = `TriggerServerEvent("${input1}", ${input2})`;
+        document.getElementById('outputBox').style.display = 'block';
+    }
+    function toggleVideo() {
+        let video = document.getElementById('videoPlayer');
+        video.paused ? (video.play(), document.querySelector('.play-btn').textContent = '❚❚') : (video.pause(), document.querySelector('.play-btn').textContent = '►');
+    }
+    function copyToClipboard() {
+        let textToCopy = document.getElementById('outputText').value;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            alert("Text copied to clipboard!");
+        }).catch(err => {
+            alert("Failed to copy text: " + err);
+        });
+    }
+
+    document.body.innerHTML += '<div class="copyright">© Nasser. All rights reserved. .</div>';
+</script>
+</body>
+</html>
